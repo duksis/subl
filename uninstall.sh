@@ -7,4 +7,8 @@ if [ -f "$HOME/.sublime/uninstall_config.sh" ]; then
 fi
 rm -fr $HOME/.sublime
 
+# Remove sublime configuration
+rm -fr "${HOME}/Library/Application Support/Sublime Text 2"
+
+
 source $HOME/.bash_profile
