@@ -10,4 +10,5 @@
 # Uninstall with
 `source uninstall.sh`
 
- 
+# Dependencies
+ * *Git* for cloning sublime settings repository
