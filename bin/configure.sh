@@ -10,7 +10,7 @@ function mark_for_uninstall {
 }
 
 # Add subl executable into a PATH directory
-if [ -f "${XSUBLIME_EXECUTABLE}" ] && [ -n "$(which subl)" ]; then
+if [ -f "${XSUBLIME_EXECUTABLE}" ]; then  #&& [ -n "$(which subl)" ]; then
   mkdir -p $HOME/bin
   ln -sv "${XSUBLIME_EXECUTABLE}" $HOME/bin/subl
 
