@@ -1,6 +1,6 @@
 #!/bin/sh
 XSUBLIME_EXECUTABLE=/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl
-XSUBLIME_CONFIG_DIR=$HOME/Library/Application\ Support/Sublime\ Text\ 2/Packages/User
+XSUBLIME_INSTALLED_PKGS=$HOME/Library/Application\ Support/Sublime\ Text\ 2/Packages
 XSUBLIME_CONFIG_SOURCE="git@github.com:duksis/sublime-settings.git"
 XSUBLIME_CONFIG_TARGET=$HOME/.config/sublime-text-2
 
@@ -29,6 +29,9 @@ else
   mark_for_uninstall "-fr ${XSUBLIME_CONFIG_TARGET}"
   git clone "${XSUBLIME_CONFIG_SOURCE}" "${XSUBLIME_CONFIG_TARGET}"
 fi
-mkdir -p "$XSUBLIME_CONFIG_DIR"
-rm -r "$XSUBLIME_CONFIG_DIR"
-ln -shvf "${XSUBLIME_CONFIG_TARGET}" "${XSUBLIME_CONFIG_DIR}"
+mkdir -p "$XSUBLIME_INSTALLED_PKGS"
+ln -shvf "${XSUBLIME_CONFIG_TARGET}" "${XSUBLIME_INSTALLED_PKGS}/User"
+
+# Install package control
+wget -P /tmp/ http://sublime.wbond.net/Package%20Control.sublime-package
+mv "/tmp/Package Control.sublime-package" "${XSUBLIME_INSTALLED_PKGS}"
