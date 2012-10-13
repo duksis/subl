@@ -16,3 +16,5 @@ hdiutil detach "/Volumes/Sublime Text 2"
 rm "/tmp/Sublime Text 2.0.1.dmg"
 
 source bin/configure.sh
+
+source $HOME/.bash_profile
