@@ -1,10 +1,10 @@
 #!/bin/sh
-XSUBLIME_EXECUTABLE=${XSUBLIME_EXECUTABLE:-/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl}
-XSUBLIME_CONFIG=${XSUBLIME_CONFIG:-$HOME/Library/Application\ Support/Sublime\ Text\ 2}
-XSUBLIME_PKGS=${XSUBLIME_CONFIG:?}/Packages
-XSUBLIME_INSTALLED_PKGS=${XSUBLIME_CONFIG:?}/Installed\ Packages
-XSUBLIME_CONFIG_SOURCE=${CONFIG:-"git://github.com/duksis/sublime-settings.git"}
-XSUBLIME_CONFIG_TARGET=$HOME/.config/sublime-text-2
+XSUBL_EXECUTABLE=${XSUBL_EXECUTABLE:-/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl}
+XSUBL_CONFIG=${XSUBL_CONFIG:-$HOME/Library/Application\ Support/Sublime\ Text\ 2}
+XSUBL_PKGS=${XSUBL_CONFIG:?}/Packages
+XSUBL_INSTALLED_PKGS=${XSUBL_CONFIG:?}/Installed\ Packages
+XSUBL_CONFIG_SOURCE=${CONFIG:-"git://github.com/duksis/sublime-settings.git"}
+XSUBL_CONFIG_TARGET=$HOME/.config/sublime-text-2
 
 function mark_for_uninstall {
 	mkdir -p $HOME/.sublime
@@ -12,28 +12,27 @@ function mark_for_uninstall {
 }
 
 # Add subl executable into a PATH directory
-if [ -f "${XSUBLIME_EXECUTABLE}" ]; then  #&& [ -n "$(which subl)" ]; then
+if [ -f "${XSUBL_EXECUTABLE}" ]; then  #&& [ -n "$(which subl)" ]; then
   mkdir -p $HOME/bin
-  ln -sv "${XSUBLIME_EXECUTABLE}" $HOME/bin/subl
+  ln -sv "${XSUBL_EXECUTABLE}" $HOME/bin/subl
 
   mark_for_uninstall "$HOME/bin/subl"
 fi
 
 # Sublime user setting
-if [ -d "${XSUBLIME_CONFIG_DIR}" ]; then
-  mv "${XSUBLIME_CONFIG_DIR}" "${XSUBLIME_CONFIG_DIR}.default"
+if [ -d "${XSUBL_CONFIG_DIR}" ]; then
+  mv "${XSUBL_CONFIG_DIR}" "${XSUBL_CONFIG_DIR}.default"
 fi
 
-if [ -d "${XSUBLIME_CONFIG_TARGET}" ]; then
-  echo "Sublime configuration already pressent at '${XSUBLIME_CONFIG_TARGET}'"
+mkdir -p "$XSUBL_PKGS"
+
+if [ -d "${XSUBL_CONFIG_SOURCE}" ]; then
+  ln -shvf "${XSUBL_CONFIG_SOURCE}" "${XSUBL_PKGS}/User"
 else
-  mkdir -p "${XSUBLIME_CONFIG_TARGET}"
-  mark_for_uninstall "-fr ${XSUBLIME_CONFIG_TARGET}"
-  git clone "${XSUBLIME_CONFIG_SOURCE}" "${XSUBLIME_CONFIG_TARGET}"
+  git clone "${XSUBL_CONFIG_SOURCE}" "${XSUBL_PKGS}/User"
 fi
-mkdir -p "$XSUBLIME_PKGS"
-ln -shvf "${XSUBLIME_CONFIG_TARGET}" "${XSUBLIME_PKGS}/User"
 
 # Install package control
 wget -P /tmp/ http://sublime.wbond.net/Package%20Control.sublime-package
-mv "/tmp/Package Control.sublime-package" "${XSUBLIME_INSTALLED_PKGS}"
+mkdir -p "${XSUBL_INSTALLED_PKGS}"
+mv "/tmp/Package Control.sublime-package" "${XSUBL_INSTALLED_PKGS}/"
