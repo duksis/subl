@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # download image
 wget -P /tmp/ http://c758482.r82.cf2.rackcdn.com/Sublime%20Text%202.0.1.dmg

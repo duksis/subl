@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 end_ret=0
 for test_suite in tests/*_test.sh; do

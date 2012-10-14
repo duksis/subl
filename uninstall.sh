@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 sudo rm -fr "/Applications/Sublime Text 2.app"
 
