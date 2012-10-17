@@ -1,4 +1,4 @@
-# Installer for Sublime text 2 on MacOS X
+# Installer for Sublime Text 2 on MacOS X
 
 ## What it does:
  1. Installs Sublime
@@ -7,14 +7,15 @@
  4. Installs Package Control
 
 ### Install with
-`./install.sh ` # to use my predefined [sublime settings][1]
 
-  or
+`CONFIG=~/code/sublime-settings \curl -L https://raw.github.com/duksis/subl/master/install.sh | bash -s`
 
-`./install.sh --configure <PATH TO SUBLIME USER CONFIG DIR> # to use your own sublime configuration`
+where `~/code/sublime-settings` should be replaced with path to your sublime user directory or git repository url
+in case no configuration will be provided my predefined [sublime settings][1] are going to be used
+
 
 ### Uninstall with
-`./uninstall.sh`
+`\curl -L https://raw.github.com/duksis/subl/master/uninstall.sh | bash -s`
 
 ## Dependencies
 Runtime:
