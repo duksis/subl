@@ -1,6 +1,7 @@
 #!/bin/bash
 
 XSUBL_CONFIG=${XSUBL_CONFIG:-$HOME/Library/Application\ Support/Sublime\ Text\ 2}
+XSUBL_EXECUTABLE=${XSUBL_EXECUTABLE:-"/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl"}
 XSUBL_CONFIG_SOURCE=${XSUBL_CONFIG_SOURCE:-"git://github.com/duksis/sublime-settings.git"}
 XSUBL_CONFIG_TARGET=$HOME/.config/sublime-text-2
 
@@ -39,10 +40,6 @@ function mark_for_uninstall {
 
 function should_install {
   [ "$MANUAL" != "1" ]
-}
-
-function subl_executable {
-  "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl"
 }
 
 
@@ -111,7 +108,7 @@ function reload_shell {
 if should_install; then
   install_sublime
 
-  link_subl_executable_to_path
+  link_subl_executable_to_path "$XSUBL_EXECUTABLE"
 
   link_user_settings "$XSUBL_CONFIG" "${XSUBL_CONFIG_SOURCE:-$CONFIG}"
 
