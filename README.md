@@ -10,8 +10,9 @@
 
 `CONFIG=~/code/sublime-settings \curl -L https://raw.github.com/duksis/subl/master/install.sh | bash -s`
 
-where `~/code/sublime-settings` should be replaced with path to your sublime user directory or git repository url
-in case no configuration will be provided my predefined [sublime settings][1] are going to be used
+where `~/code/sublime-settings` should be replaced with path to your sublime user directory or git repository url.
+
+In case no configuration will be provided my predefined [sublime settings][1] are going to be used
 
 
 ### Uninstall with
