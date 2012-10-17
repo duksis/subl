@@ -1,10 +1,7 @@
 #!/bin/bash
 
-XSUBL_EXECUTABLE=${XSUBL_EXECUTABLE:-/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl}
 XSUBL_CONFIG=${XSUBL_CONFIG:-$HOME/Library/Application\ Support/Sublime\ Text\ 2}
-XSUBL_PKGS=${XSUBL_CONFIG:?}/Packages
-XSUBL_INSTALLED_PKGS=${XSUBL_CONFIG:?}/Installed\ Packages
-XSUBL_CONFIG_SOURCE=${CONFIG:-"git://github.com/duksis/sublime-settings.git"}
+XSUBL_CONFIG_SOURCE=${XSUBL_CONFIG_SOURCE:-"git://github.com/duksis/sublime-settings.git"}
 XSUBL_CONFIG_TARGET=$HOME/.config/sublime-text-2
 
 args="$(getopt -n "$0" -l help,manual,configure hmc $*)" \
@@ -28,10 +25,6 @@ Options:
 EOF
             exit 0;;
         -m|--manual)
-            cat <<EOF
-Available actions:
-  TODO#
-EOF
             MANUAL=1;;
         -c|--configure)
             CONFIG=$OPTARG;;
@@ -46,6 +39,10 @@ function mark_for_uninstall {
 
 function should_install {
   [ "$MANUAL" != "1" ]
+}
+
+function subl_executable {
+  "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl"
 }
 
 
@@ -71,9 +68,10 @@ function install_sublime {
 ## Configuring Sublime Text 2
 # Add subl executable into a PATH directory
 function link_subl_executable_to_path {
-  if [ -f "${XSUBL_EXECUTABLE}" ]; then
+  _executable=${1:?}
+  if [ -f "${_executable}" ]; then
     mkdir -p $HOME/bin
-    ln -sv "${XSUBL_EXECUTABLE}" $HOME/bin/subl
+    ln -sv "${_executable}" $HOME/bin/subl
 
     mark_for_uninstall "$HOME/bin/subl"
   fi
@@ -81,24 +79,28 @@ function link_subl_executable_to_path {
 
 # Sublime user setting
 function link_user_settings {
-  if [ -d "${XSUBL_CONFIG_DIR}" ]; then
-    mv "${XSUBL_CONFIG_DIR}" "${XSUBL_CONFIG_DIR}.default"
+  pkg_dir="${1:?}/Packages"
+  config="${2:?}"
+
+  if [ -d "${pkg_dir}/User" ]; then
+    mv "${pkg_dir}/User" "${pkg_dir}/User.default"
   fi
 
-  mkdir -p "$XSUBL_PKGS"
+  mkdir -p "$pkg_dir"
 
-  if [ -d "${XSUBL_CONFIG_SOURCE}" ]; then
-    ln -shvf "${XSUBL_CONFIG_SOURCE}" "${XSUBL_PKGS}/User"
+  if [ -d "${config}" ]; then
+    ln -shf "${config}" "${pkg_dir}/User"
   else
-    git clone "${XSUBL_CONFIG_SOURCE}" "${XSUBL_PKGS}/User"
+    git clone "${config}" "${pkg_dir}/User"
   fi
 }
 
 # Install package control
 function install_package_control {
+  _installed_pkgs=${1:?}/Installed\ Packages
   wget -P /tmp/ http://sublime.wbond.net/Package%20Control.sublime-package
-  mkdir -p "${XSUBL_INSTALLED_PKGS}"
-  mv "/tmp/Package Control.sublime-package" "${XSUBL_INSTALLED_PKGS}/"
+  mkdir -p "${_installed_pkgs}"
+  mv "/tmp/Package Control.sublime-package" "${_installed_pkgs}/"
 }
 
 # Reloade shell for changes to take place
@@ -111,9 +113,9 @@ if should_install; then
 
   link_subl_executable_to_path
 
-  link_user_settings
+  link_user_settings "$XSUBL_CONFIG" "${XSUBL_CONFIG_SOURCE:-$CONFIG}"
 
-  install_package_control
+  install_package_control "$XSUBL_CONFIG"
 
   reload_shell
 fi
