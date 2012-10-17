@@ -7,11 +7,52 @@ XSUBL_INSTALLED_PKGS=${XSUBL_CONFIG:?}/Installed\ Packages
 XSUBL_CONFIG_SOURCE=${CONFIG:-"git://github.com/duksis/sublime-settings.git"}
 XSUBL_CONFIG_TARGET=$HOME/.config/sublime-text-2
 
+args="$(getopt -n "$0" -l verbose,help,manual,configure vhmc $*)" \
+|| exit -1
+for arg in $args; do
+    case "$arg" in
+        -h)
+            echo "$0 [-vmc] [--verbose] [--manual] [--configure]"
+            echo "`sed 's/./ /g' <<< "$0"` [-h] [--help]"
+            exit 0;;
+        --help)
+            cat <<EOF
+Usage: $0 [options]
+One line Sublime Text 2 installer.
+
+Options:
+  -v, --verbose           output more detailed execution details
+  -m, --manual            loads functions for manual execution
+  -c, --configure <PATH>  configure Sublime (a path/url to configuration should be provided)
+  -h                      show brief usage information and exit
+  --help                  show this help message and exit
+EOF
+            exit 0;;
+        -v|--verbose)
+            DEBUG=1;;
+        -m|--manual)
+            cat <<EOF
+Available actions:
+  TODO#
+EOF
+            MANUAL=1;;
+        -c|--configure)
+            CONFIG=$OPTARG;;
+        -p|--package-only)
+            PACKAGE_ONLY=1;;
+    esac
+done
+
 ## Helpers
 function mark_for_uninstall {
 	mkdir -p $HOME/.sublime
   echo "rm $1" >> $HOME/.sublime/uninstall_config.sh
 }
+
+function should_install {
+  [ "$MANUAL" != "1" ]
+}
+
 
 ## Sublime Text 2
 # Downloads, mounts and moves sublime to application dir
@@ -34,7 +75,7 @@ function install_sublime {
 
 ## Configuring Sublime Text 2
 # Add subl executable into a PATH directory
-function subl_executable_to_path {
+function link_subl_executable_to_path {
   if [ -f "${XSUBL_EXECUTABLE}" ]; then  #&& [ -n "$(which subl)" ]; then
     mkdir -p $HOME/bin
     ln -sv "${XSUBL_EXECUTABLE}" $HOME/bin/subl
@@ -70,12 +111,14 @@ function reload_shell {
   source $HOME/.bash_profile
 }
 
-install_sublime
+if should_install; then
+  install_sublime
 
-subl_executable_to_path
+  link_subl_executable_to_path
 
-link_user_settings
+  link_user_settings
 
-install_package_control
+  install_package_control
 
-reload_shell
+  reload_shell
+fi
