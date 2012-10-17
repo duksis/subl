@@ -110,7 +110,7 @@ if should_install; then
 
   link_subl_executable_to_path "$XSUBL_EXECUTABLE"
 
-  link_user_settings "$XSUBL_CONFIG" "${XSUBL_CONFIG_SOURCE:-$CONFIG}"
+  link_user_settings "$XSUBL_CONFIG" "${CONFIG:-$XSUBL_CONFIG_SOURCE}"
 
   install_package_control "$XSUBL_CONFIG"
 
