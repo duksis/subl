@@ -30,8 +30,9 @@ Development:
 ## License
 (The MIT License)
 
-Copyright &copy; 2012 Hugo Duksis. See [LICENSE](LICENSE) file for more details.
+Copyright &copy; 2012 Hugo Duksis. See [LICENSE][4] file for more details.
 
 [1]: http://github.com/duksis/sublime-settings "Sublime settings"
 [2]: http://git-scm.com "Git"
 [3]: https://github.com/lehmannro/assert.sh "assert.sh"
+[4]: https://github.com/duksis/subl/blob/master/LICENSE "LICENSE"
