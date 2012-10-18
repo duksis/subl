@@ -2,8 +2,11 @@
 
 XSUBL_CONFIG=${XSUBL_CONFIG:-$HOME/Library/Application\ Support/Sublime\ Text\ 2}
 XSUBL_EXECUTABLE=${XSUBL_EXECUTABLE:-"/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl"}
-XSUBL_CONFIG_SOURCE=${XSUBL_CONFIG_SOURCE:-"git://github.com/duksis/sublime-settings.git"}
 XSUBL_CONFIG_TARGET=$HOME/.config/sublime-text-2
+if [ "$XSUBL_CONFIG_SOURCE" == "" ] && [ -d "$XSUBL_CONFIG_TARGET" ]; then
+  XSUBL_CONFIG_SOURCE=$XSUBL_CONFIG_TARGET
+fi
+
 
 args="$(getopt -n "$0" -l help,manual,configure hmc $*)" \
 || exit -1
@@ -110,7 +113,7 @@ if should_install; then
 
   link_subl_executable_to_path "$XSUBL_EXECUTABLE"
 
-  link_user_settings "$XSUBL_CONFIG" "${CONFIG:-$XSUBL_CONFIG_SOURCE}"
+  [ "${CONFIG:-$XSUBL_CONFIG_SOURCE}" != "" ] && link_user_settings "$XSUBL_CONFIG" "${CONFIG:-$XSUBL_CONFIG_SOURCE}"
 
   install_package_control "$XSUBL_CONFIG"
 

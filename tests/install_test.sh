@@ -16,6 +16,8 @@ _cleanup
 
 ## Linking user directory
 _prepare
+# should error out if no params provided
+assert_raises "link_user_settings" 1
 assert_raises "link_user_settings ${_setting_directory} ${_config}" 0
 assert "ls -1 ${_setting_directory}/Packages/User" "${_setting_directory}/Packages/User"
 _cleanup
