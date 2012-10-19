@@ -8,9 +8,9 @@
 
 ### Install with
 
-`$ \curl -L raw.github.com/duksis/subl/master/install.sh | CONFIG=~/code/sublime-settings bash`
+`$ \curl -L raw.github.com/duksis/subl/master/install.sh | CONFIG=~/.config/sublime-text-2 bash`
 
-where `~/code/sublime-settings` should be replaced with path to your sublime user directory or git repository url.
+where `~/.config/sublime-text-2` should be replaced with path to your sublime user directory or git repository url.
 
 
 ### Uninstall with
